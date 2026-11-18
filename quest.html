@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Thumb Typing XR</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script type="importmap">
+    { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+  </script>
+</head>
+<body style="overflow:auto">
+  <section class="panel start" id="xrStart">
+    <h1>Thumb Typing — Meta Quest 3</h1>
+    <p class="lead">Uses WebXR hand tracking (no camera image needed) with passthrough. The same gesture engine runs on the 25 tracked hand joints.</p>
+    <ol class="hint">
+      <li>Open this page in the Meta Quest Browser.</li>
+      <li>Put the controllers down so hand tracking takes over.</li>
+      <li>Press <b>Enter AR</b>, hold your right hand open with the palm toward you, and touch your thumb to a finger segment.</li>
+    </ol>
+    <label>Hand
+      <select id="handSel"><option value="right">Right</option><option value="left">Left</option></select></label>
+    <div class="buttons">
+      <button id="btnAR" class="primary" disabled>Checking WebXR…</button>
+      <button id="btnVR" disabled>Enter VR</button>
+      <a class="button" href="index.html">Camera version</a>
+    </div>
+    <p id="xrStatus" class="status"></p>
+  </section>
+  <script type="module" src="js/quest.js"></script>
+</body>
+</html>

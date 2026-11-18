@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#0b0f14">
+  <title>Thumb Typing</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <canvas id="view"></canvas>
+  <video id="video" playsinline muted></video>
+
+  <!-- Start screen -->
+  <section id="start" class="panel start">
+    <h1>Thumb Typing</h1>
+    <p class="lead">Camera-based prototype of the sEMG wristband keyboard. Hold your hand open, palm toward the camera, then touch your thumb to a finger segment. Each of the 12 segments (P1–P12) is one key.</p>
+    <img src="img/keymap.svg" alt="Finger segments P1 to P12 mapped to a 12-key keypad" class="keymap">
+    <div class="row">
+      <label>Camera
+        <select id="facing">
+          <option value="user">Front (selfie)</option>
+          <option value="environment">Rear (world)</option>
+        </select>
+      </label>
+    </div>
+    <div class="buttons">
+      <button id="btnScreen" class="primary">Start on screen</button>
+      <button id="btnCardboard">Start Cardboard VR</button>
+      <a class="button" href="quest.html">Meta Quest 3 (WebXR)</a>
+    </div>
+    <p class="hint">Cardboard uses the rear camera as passthrough. Put the phone in landscape in the viewer; tap the screen to open settings.</p>
+    <p id="startStatus" class="status"></p>
+  </section>
+
+  <!-- HUD for screen mode -->
+  <section id="hud" hidden>
+    <div id="textBox" class="textbox"><span id="text"></span><span id="pending" class="pending"></span><span class="caret"></span></div>
+    <div class="hudbar">
+      <span id="modeTag" class="tag"></span>
+      <span id="caseTag" class="tag"></span>
+      <span id="stateTag" class="tag"></span>
+      <span id="fps" class="tag dim"></span>
+      <span class="spacer"></span>
+      <button id="btnCopy" title="Copy text">Copy</button>
+      <button id="btnClear" title="Clear text">Clear</button>
+      <button id="btnCalib">Calibrate</button>
+      <button id="btnSettings">Settings</button>
+    </div>
+    <div id="toast" class="toast" hidden></div>
+  </section>
+
+  <!-- Settings drawer -->
+  <section id="settings" class="panel drawer" hidden>
+    <h2>Settings</h2>
+    <label class="range">Touch distance <output id="touchOut"></output>
+      <input id="touch" type="range" min="0.08" max="0.40" step="0.01"></label>
+    <label class="range">Release distance <output id="releaseOut"></output>
+      <input id="release" type="range" min="0.15" max="0.60" step="0.01"></label>
+    <label class="range">Stable frames <output id="stableOut"></output>
+      <input id="stable" type="range" min="1" max="8" step="1"></label>
+    <label class="check"><input id="openPalm" type="checkbox"> Require open palm between keys</label>
+    <label class="check"><input id="useKnn" type="checkbox"> Use trained classifier (after calibration)</label>
+    <label>Distance space
+      <select id="space">
+        <option value="world">3D (MediaPipe world landmarks)</option>
+        <option value="image">2D (image landmarks)</option>
+      </select></label>
+    <label class="check"><input id="mirror" type="checkbox"> Mirror view</label>
+    <label class="check"><input id="sound" type="checkbox"> Click sound / vibration</label>
+    <fieldset>
+      <legend>Cardboard</legend>
+      <label class="range">Zoom <output id="zoomOut"></output>
+        <input id="zoom" type="range" min="0.6" max="2.0" step="0.05"></label>
+      <label class="range">Eye offset <output id="shiftOut"></output>
+        <input id="shift" type="range" min="-0.15" max="0.15" step="0.005"></label>
+    </fieldset>
+    <div class="buttons">
+      <button id="btnExport">Export training data</button>
+      <label class="button">Import<input id="importFile" type="file" accept="application/json" hidden></label>
+      <button id="btnResetCal">Clear training</button>
+    </div>
+    <div class="buttons">
+      <button id="btnExit">Exit to start</button>
+      <button id="btnCloseSettings" class="primary">Close</button>
+    </div>
+    <p class="hint">Debug: keys 1–9, * (or Q), 0, # (or W) act as P1–P12. Hold * or # for the long-press action.</p>
+  </section>
+
+  <!-- Calibration -->
+  <section id="calib" class="panel calib" hidden>
+    <h2>Calibration</h2>
+    <p id="calibPrompt" class="big"></p>
+    <div class="progress"><div id="calibBar"></div></div>
+    <p id="calibInfo" class="hint"></p>
+    <div class="buttons">
+      <button id="btnCalibCancel">Cancel</button>
+    </div>
+  </section>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
